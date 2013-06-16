@@ -14,7 +14,7 @@ class HTMLGenerator
 		puts "<div class='whole-page'>"
 		puts "<div class='container'>"
 		puts "<img src='http://gelcommunications.com/wp-content/uploads/2011/02/lcbo.png' class='logo'>"
-		puts "<h1>LCBO Product List</h1>"
+		puts "<h1>Product List</h1>"
 
 		products.each do |product|
 			puts "	<div class='product'>"
@@ -26,8 +26,8 @@ class HTMLGenerator
 			puts "				<li>$#{format_price(product['price_in_cents'])}</li>"
 			puts "				<li>Type: #{product['secondary_category']}</li>"
 			puts "				<li>#{product['package']}</li>"
-			puts "				<li>Alcohol content: #{product['alcohol_content']}</li>"
-			puts "				<li>Price per/L of alcohol: $#{format_price(product['price_per_liter_of_alcohol_in_cents'])}</li>"
+			puts "				<li>Alcohol content: #{format_alc(product['alcohol_content'])}%</li>"
+			puts "				<li><strong>Price per/L of alcohol: $#{format_price(product['price_per_liter_of_alcohol_in_cents'])}</strong></li>"
 			puts "			</ul>"
 			puts " 	</div>"
 		end
@@ -39,7 +39,7 @@ class HTMLGenerator
 
 	# display specific product using entered id
 	def show(id)
-		id = id.to_i
+		# id = id.to_i
 		product = retrieve_data("http://lcboapi.com/products?q=#{id}")
 		
 		puts "	<div class='product'>"
@@ -51,8 +51,8 @@ class HTMLGenerator
 		puts "				<li>$#{format_price(product['price_in_cents'])}</li>"
 		puts "				<li>Type: product['secondary_category']</li>"
 		puts "				<li>product['package']</li>"
-		puts "				<li>Alcohol content: product['alcohol_content']</li>"
-		puts "				<li>Price per/L of alcohol: $format_price(product['price_per_liter_of_alcohol_in_cents'])</li>"
+		puts "				<li>Alcohol content: #{format_alc(product['alcohol_content'])}%</li>"
+		puts "				<li><strong>Price per/L of alcohol: $format_price(product['price_per_liter_of_alcohol_in_cents'])</strong></li>"
 		if product['is_discontinued']
 			puts "        <li>On Sales!</li>"
 			puts "				<li>Savings: $format_price(product['limited_time_offer_savings_in_cents'])</li>"
@@ -91,6 +91,10 @@ class HTMLGenerator
 
     # Return just the actual result data from the response, ignoring metadata
     result = parsed_response["result"]
+	end
+
+	def format_alc(content)
+		content.to_f/100
 	end
 
 	def format_price(cents_string)

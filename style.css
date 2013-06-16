@@ -19,9 +19,11 @@ div.container {
 
 h1 {
   text-align: center;
-  margin: 5px auto;
-  font-size: 36px;
-  font-family: ;
+  margin-top: 20px;
+  font-size: 70px;
+  font-family: sans-serif;
+  color: #314A2E;
+  padding-top: 65px;
 }
 
 body {
@@ -37,7 +39,6 @@ body {
   width: 100%;
   border-radius:5px;
   background: rgba(0,0,0,0.05)
-
 }
 
 .product-thumb {
@@ -46,10 +47,11 @@ body {
   height: 210px;
   margin-right: 20px;
   background-color: none;
+  padding-right: 20px;
 }
 
 
 .product-data {
-  list-style-type: none;
+  list-style-type: circle;
   padding: 10px;
 }

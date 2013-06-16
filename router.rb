@@ -18,9 +18,9 @@ class Router
 		end
 	elsif action == "show"
 		id = ARGV[1]
+		if id.nil?
+      puts "Unknown ID! Try again: ruby router.rb show [id]"
+    end
 		generator.show(id)
-		# puts "Unkown action! Usage: ruby router.rb [action] [args]"
 	end
-
-
 end
