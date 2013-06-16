@@ -1,0 +1,27 @@
+body {
+  margin: 20px;
+}
+
+.product {
+  margin-bottom: 20px;
+  overflow: auto;
+  width: 100%;
+}
+
+.product-thumbnail {
+  float: left;
+  width: 234px;
+  height: 188px;
+  margin-right: 20px;
+}
+
+.product-image {
+  float: left;
+  width: 640px;
+  height: 721px;
+  margin-right: 20px;
+}
+
+.product-data {
+  list-style-type: none;
+}

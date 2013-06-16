@@ -9,46 +9,67 @@ class HTMLGenerator
 		product_array = []
 		products = retrieve_data("http://lcboapi.com/products?q=#{search}")
 
-		products.each do |products|
-			puts "	<div img=#{product['image_url']}</div>"
-			puts "		<h3>Displaying all #{search} Products"
-			puts "			<ul>"
-			puts "				<li>#{product['id']}</li>"
+		print_header
+
+		puts "<h1>LCBO Product List</h1>"
+
+		products.each do |product|
+			puts "	<div class='product'>"
+			puts "		<img src='#{product['image_thumb_url']}' class='product-thumb'/>"
+			puts "		<h2>#{product['name']}</h2>" 
+			puts "			<ul class='product-date'>"
+			puts "				<li>ID: #{product['id']}</li>"
 			puts "				<li>#{product['name']}</li>"
-			puts "				<li>#{format_price(product['price_in_cents']})</li>"
-			puts "				<li>#{product['primary_category']}</li>"
-			puts "				<li>#{product['secondary_category']}</li>"
+			puts "				<li>$#{format_price(product['price_in_cents'])}</li>"
+			puts "				<li>Type: #{product['secondary_category']}</li>"
 			puts "				<li>#{product['package']}</li>"
-			puts "				<li>#{product['package_unit_volume_in_milieters']}</li>"
-			puts "				<li>#{product['total_package_units']}</li>"
-			puts "				<li>#{product['alcohol_content']}</li>"
-			puts "				<li>#{product['price_per_liter_of_alcohol_in_cents']}</li>"
-			puts "				<li>#{product['image_thumb_ur']}</li>"
-			puts "				<li></li>"
+			puts "				<li>Alcohol content: #{product['alcohol_content']}</li>"
+			puts "				<li>Price per/L of alcohol: $#{format_price(product['price_per_liter_of_alcohol_in_cents'])}</li>"
 			puts "			</ul>"
 			puts " 	</div>"
 		end
+
+		puts "<footer>Search a product ID for more information</footer>"
+		print_footer
 
 	end
 
 	# display specific product using entered id
 	def show(id)
-		#if id is not valid, display error message
-		products = (open("http://lcboapi.com/products"))
-		#use id to find and return specific product index
-		index = products.index do |product|
-			if product["id"] == id
-		end
+		product = retrieve_data("http://lcboapi.com/products?q=#{id}")
+		
+		puts "	<div class='product'>"
+		puts "		<img src='product['image_thumb_url']' class='product-thumb'/>"
+		puts "		<h2>product['name']</h2>" 
+		puts "			<ul class='product-date'>"
+		puts "				<li>ID: product['id']</li>"
+		puts "				<li>product['name']</li>"
+		puts "				<li>$#{format_price(product['price_in_cents'])}</li>"
+		puts "				<li>Type: product['secondary_category']</li>"
+		puts "				<li>product['package']</li>"
+		puts "				<li>Alcohol content: product['alcohol_content']</li>"
+		puts "				<li>Price per/L of alcohol: $format_price(product['price_per_liter_of_alcohol_in_cents'])</li>"
+		puts "			</ul>"
+		puts " 	</div>"
+		
+		print_header
+
 	end
 
 	def print_header
-		puts "<header>"
-		puts " <h1>Find Your Favourite LCBO Products!</h1>"
-		puts "</header>"
+		puts "<!DOCTYPE html>"
+		puts "<html>"
+		puts "	<head>"
+		puts " 		<title>Find Your Favourite LCBO Products!</title>"
+		puts "		<link rel='stylesheet' href='normalize.css' type='text/css'>"
+    puts "    <link rel='stylesheet' href='style.css' type='text/css'>"
+		puts "	</head>"
+		puts "	<body>"
 	end
 
 	def print_footer
-
+		puts "	</body>"
+		puts "</html>"
 	end
 
 	def retrieve_data(url)
@@ -63,7 +84,7 @@ class HTMLGenerator
 	end
 
 	def format_price(cents_string)
-		cents_string.to_f * 0.01		
+		cents_string.to_f/100		
 	end
 
 end
