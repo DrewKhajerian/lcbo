@@ -11,6 +11,9 @@ class HTMLGenerator
 
 		print_header
 
+		puts "<div class='whole-page'>"
+		puts "<div class='container'>"
+		puts "<img src='http://gelcommunications.com/wp-content/uploads/2011/02/lcbo.png' class='logo'>"
 		puts "<h1>LCBO Product List</h1>"
 
 		products.each do |product|
@@ -36,12 +39,13 @@ class HTMLGenerator
 
 	# display specific product using entered id
 	def show(id)
+		id = id.to_i
 		product = retrieve_data("http://lcboapi.com/products?q=#{id}")
 		
 		puts "	<div class='product'>"
 		puts "		<img src='product['image_thumb_url']' class='product-thumb'/>"
 		puts "		<h2>product['name']</h2>" 
-		puts "			<ul class='product-date'>"
+		puts "			<ul class='product-data'>"
 		puts "				<li>ID: product['id']</li>"
 		puts "				<li>product['name']</li>"
 		puts "				<li>$#{format_price(product['price_in_cents'])}</li>"
@@ -49,6 +53,10 @@ class HTMLGenerator
 		puts "				<li>product['package']</li>"
 		puts "				<li>Alcohol content: product['alcohol_content']</li>"
 		puts "				<li>Price per/L of alcohol: $format_price(product['price_per_liter_of_alcohol_in_cents'])</li>"
+		if product['is_discontinued']
+			puts "        <li>On Sales!</li>"
+			puts "				<li>Savings: $format_price(product['limited_time_offer_savings_in_cents'])</li>"
+		end
 		puts "			</ul>"
 		puts " 	</div>"
 		
@@ -68,6 +76,8 @@ class HTMLGenerator
 	end
 
 	def print_footer
+		puts "	</div>"
+		puts " 	</div>"
 		puts "	</body>"
 		puts "</html>"
 	end
